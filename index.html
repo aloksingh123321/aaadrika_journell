@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Midnight Garden: Aadrika's Journey</title>
+    <!-- Ultra Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Great+Vibes&family=Montserrat:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary-text: #e0e0e0;
+            --accent-pink: #ffafd6;
+            --accent-gold: #ffd700;
+            --emotional-font: 'Great Vibes', cursive;
+            --title-font: 'Playfair Display', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-color: #010103;
+            color: var(--primary-text);
+        }
+
+        /* --- BACKGROUNDS --- */
+        .bg-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            transition: opacity 1.5s;
+        }
+
+        #bg-1 {
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+            opacity: 1;
+        }
+
+        #bg-2 {
+            background: linear-gradient(to bottom, #230b0b, #4a1c1c, #000);
+            opacity: 0;
+        }
+
+        .moon {
+            position: fixed;
+            bottom: -30vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40vh;
+            height: 40vh;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 0 100px #fff;
+            opacity: 0;
+            transition: 2s;
+            z-index: -8;
+        }
+
+        .stars,
+        .fog {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -5;
+        }
+
+        /* --- CURSOR --- */
+        #cursor-dot {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+
+        #cursor-outline {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+
+        /* --- REDESIGNED LOCK SCREEN (ROMANTIC) --- */
+        #lock-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1515966097209-ec48fdbbec6d?q=80&w=2544&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: 2s cubic-bezier(0.8, 0, 0.2, 1);
+        }
+
+        #lock-screen.unlocked {
+            transform: scale(5);
+            opacity: 0;
+            pointer-events: none;
+            filter: blur(40px);
+        }
+
+        .pulse-heart {
+            font-size: 5rem;
+            color: var(--accent-pink);
+            margin-bottom: 2rem;
+            animation: heartbeat 1.5s infinite;
+            filter: drop-shadow(0 0 20px var(--accent-pink));
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+
+            15% {
+                transform: scale(1.3);
+            }
+
+            30% {
+                transform: scale(1);
+            }
+
+            45% {
+                transform: scale(1.15);
+            }
+
+            60% {
+                transform: scale(1);
+            }
+        }
+
+        .lock-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(30px);
+            padding: 4rem 6rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.05);
+            transform: translateY(0);
+            transition: 0.3s;
+        }
+
+        .lock-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 60px rgba(255, 175, 214, 0.2);
+        }
+
+        .pass-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            font-size: 1.5rem;
+            text-align: center;
+            letter-spacing: 8px;
+            padding: 15px 30px;
+            width: 300px;
+            outline: none;
+            margin: 2rem 0;
+            font-family: 'Montserrat';
+            border-radius: 50px;
+            transition: 0.3s;
+        }
+
+        .pass-input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 20px rgba(255, 175, 214, 0.3);
+        }
+
+        .enter-btn {
+            padding: 15px 50px;
+            border-radius: 50px;
+            border: none;
+            background: linear-gradient(45deg, var(--accent-pink), #ff7eb3);
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: none;
+            box-shadow: 0 5px 20px rgba(255, 126, 179, 0.4);
+            transition: 0.3s;
+        }
+
+        .enter-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 126, 179, 0.6);
+        }
+
+        /* --- CONTENT --- */
+        #journal-container {
+            opacity: 0;
+            transition: opacity 1.5s;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        section {
+            padding: 8rem 5%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .section-title {
+            font-family: 'Cinzel Decorative';
+            font-size: 3.5rem;
+            margin-bottom: 8rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: 1s;
+        }
+
+        .section-title.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- CARD FIXED WRAPPER --- */
+        .card-wrapper {
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 15rem;
+            perspective: 1000px;
+            opacity: 0;
+            transform: translateY(100px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+        }
+
+        .card-wrapper.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card {
+            display: flex;
+            background: var(--glass-bg);
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            transform-style: preserve-3d;
+        }
+
+        .card:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .card-img-box {
+            flex: 1;
+            min-height: 500px;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-content {
+            flex: 1;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .c-title {
+            font-family: var(--title-font);
+            font-size: 2.5rem;
+            color: var(--accent-pink);
+            margin-bottom: 2rem;
+        }
+
+        .c-text {
+            font-size: 1.2rem;
+            line-height: 2.2;
+            color: #ddd;
+            font-weight: 300;
+        }
+
+        .highlight {
+            font-family: var(--emotional-font);
+            font-size: 2.2rem;
+            color: var(--accent-gold);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            display: block;
+            margin: 15px 0;
+        }
+
+        /* --- RESTORED MEMORIES SECTION --- */
+        .memories-grid {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: 1s;
+        }
+
+        .memories-grid.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mem-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 3rem;
+            border-radius: 20px;
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mem-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* --- RESTORED FINALE SECTION --- */
+        .finale-box {
+            max-width: 800px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: 1s;
+        }
+
+        .finale-box.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .vow-text {
+            font-family: 'Playfair Display';
+            font-style: italic;
+            font-size: 1.8rem;
+            line-height: 1.6;
+            color: #ddd;
+            margin-bottom: 3rem;
+        }
+
+        .magic-btn {
+            padding: 20px 60px;
+            border-radius: 50px;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #fff;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            transition: 0.5s;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .magic-btn:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 50px #fff;
+        }
+
+        /* --- MODAL (Replacing Alert) --- */
+        #modal-2026 {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 6000;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.5s;
+        }
+
+        #modal-2026.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transform: scale(0.8);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 100px rgba(255, 175, 214, 0.2);
+        }
+
+        #modal-2026.active .modal-content {
+            transform: scale(1);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .card {
+                flex-direction: column !important;
+            }
+
+            .card-img-box {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <audio id="bgm" loop>
+        <source src="bg-music.mp3">
+    </audio>
+    <div id="cursor-dot"></div>
+    <div id="cursor-outline"></div>
+
+    <div id="bg-1" class="bg-fixed"></div>
+    <div id="bg-2" class="bg-fixed"></div>
+    <div class="moon"></div>
+    <div id="fireflies" style="position:fixed; inset:0; pointer-events:none;"></div>
+
+    <!-- LOCK SCREEN (New Design) -->
+    <div id="lock-screen">
+        <div class="lock-card">
+            <div class="pulse-heart">❤️</div>
+            <h1
+                style="font-family:'Cinzel Decorative';font-size:2.5rem;color:#fff;margin-bottom:0.5rem; letter-spacing: 2px;">
+                The Midnight Garden</h1>
+            <p style="font-family:'Playfair Display';font-style:italic;color:#aaa;">A journey written in the stars...
+            </p>
+
+            <p id="err"
+                style="color:#ff8fa3;font-family:'Great Vibes';font-size:1.5rem;min-height:30px;opacity:0;transition:0.5s; margin-top: 2rem;">
+                Listen to your heart...</p>
+            <input type="password" id="pass" class="pass-input" placeholder="••••••••">
+            <br>
+            <button onclick="unlock()" class="enter-btn">OPEN HEART</button>
+        </div>
+    </div>
+
+    <!-- 2026 MODAL (Previously Updated) -->
+    <div id="modal-2026" onclick="closeModal()">
+        <div class="modal-content" style="max-width: 900px; padding: 4rem;">
+            <h1
+                style="font-family:'Great Vibes';font-size:5rem;color:var(--accent-pink);margin-bottom:2rem;text-shadow:0 0 20px rgba(255,175,214,0.4);">
+                Happy 2026
+            </h1>
+
+            <p
+                style="font-family:'Playfair Display'; font-style:italic; font-size:1.4rem; color:#e0e0e0; margin-bottom: 2rem; line-height: 1.6;">
+                "The years may fade, the calendars may change,<br>
+                But my heart remains stuck on you."
+            </p>
+
+            <p
+                style="font-family:'Montserrat'; font-weight:300; font-size:1.3rem; color:#fff; margin-bottom: 2.5rem; line-height: 1.8; letter-spacing: 1px;">
+                "Saal chahe naya aa jaye, par sukoon wahi purana chahiye,<br>
+                Bas tera haath, mujhe mere haath mein dobara chahiye."
+            </p>
+
+            <div style="font-family:'Great Vibes'; font-size:2.5rem; color:var(--accent-gold); margin-top:2rem;">
+                Yours, Always. 🧿
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="journal-container">
+        <header
+            style="height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
+            <h1 style="font-family:'Great Vibes';font-size:6rem;color:#fff;text-shadow:0 0 20px rgba(255,255,255,0.5);">
+                Aadrika's Journey</h1>
+            <p style="letter-spacing:5px;margin-top:20px;color:#aaa;">WRITTEN IN THE STARS</p>
+        </header>
+
+        <section>
+            <h2 class="section-title in-view-trigger">The Beginning</h2>
+
+            <!-- Card 1 (Hinglish) -->
+            <div class="card-wrapper in-view-trigger">
+                <div class="card" data-tilt>
+                    <div class="card-img-box"><img src="story-1.jpg" class="card-img"></div>
+                    <div class="card-content">
+                        <h3 class="c-title">The "Quiet" Before the Storm</h3>
+                        <p class="c-text">
+                            Yaar, sab wahin se shuru hua. BBC building. Anshika aur Pranshu apni hi duniya me baatein
+                            kar rahe the, aur hum dono ke beech wo...
+                            <span class="highlight">Cute, awkward silence...</span>
+                            Kuch bol nahi rahe the par dil zor-zor se dhadak raha tha. Main soch raha tha ki tum kya
+                            soch rahi ho. Fir tumne mera phone liya, thoda aage aayi aur ye photo click ki. Sach batau?
+                            Ghar jaate hue pure raste auto me bas isi photo ko ghoor raha tha main. Ye humari pehli
+                            nishani thi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 (Hinglish) -->
+            <div class="card-wrapper in-view-trigger">
+                <div class="card" data-tilt>
+                    <div class="card-img-box"><img src="story-2.jpg" class="card-img"></div>
+                    <div class="card-content">
+                        <h3 class="c-title">Day 1: The Vision in Black</h3>
+                        <p class="c-text">
+                            Anubhuti ka pehla din. Tumhara call aaya: <span class="highlight">"Kya pehen ke aaye
+                                ho?"</span> Maine normal sa bola "Black shirt." Par mujhe kya pata tha ki tum kya karne
+                            wali ho.
+                            <br><br>
+                            Jab tum 3 baje aayi na... *kasam se*, sab gayab ho gaye meri nazron se. Itni bheed thi par
+                            mujhe bas tum dikh rahi thi. Black dress me tum... unreal lag rahi thi.
+                            <span class="highlight">Sukoon.</span>
+                            Bas wahi mila tumhe dekh ke. Maine usi pal soch liya tha, ki bas... ab toh yahi chahiye. I
+                            knew I was gone for you.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 (Hinglish) -->
+            <div class="card-wrapper in-view-trigger">
+                <div class="card" data-tilt>
+                    <div class="card-img-box"><img src="story-3.jpg" class="card-img"></div>
+                    <div class="card-content">
+                        <h3 class="c-title">The First Frame</h3>
+                        <p class="c-text">
+                            Raat ho rahi thi Gate pe. Mujhe bas ek photo chahiye thi tumhare sath, kaise bhi karke. Jab
+                            hum finally sath khade hue, toh sab dost chidane lage...
+                            <span class="highlight">"Umm hmm, acche lag rahe dono."</span>
+                            Tum sharma rahi thi, aur main? Main toh andar hi andar foola nahi sama raha tha. Wo humari
+                            pehli 'official' photo thi sath me. Is moment ko main kabhi nahi bhul sakta.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title in-view-trigger">The Feelings</h2>
+
+            <!-- Card 4 (Hinglish) -->
+            <div class="card-wrapper in-view-trigger">
+                <div class="card" data-tilt>
+                    <div class="card-img-box"><img src="story-4.jpg" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="c-title">Holi Butterflies</h3>
+                        <p class="c-text">
+                            Bhai planning full thi meri. Soch ke aaya tha ki sabse pehle rang main hi lagaunga tumhe. B2
+                            ke bahar wait karte hue heart-beat badh rahi thi. Bhale hi pehla number mera nahi aaya, par
+                            jab maine tumhe chua...
+                            <span class="highlight">Literal chills... current laga tha mujhe.</span>
+                            Tum baar-baar rang saaf kar rahi thi, aur main bahane dhund raha tha wapas lagane ke... bas
+                            tumhe chhune ke liye. Wo nasha hi alag tha.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 (Hinglish) -->
+            <div class="card-wrapper in-view-trigger">
+                <div class="card" data-tilt>
+                    <div class="card-img-box"><img src="story-5.jpg" class="card-img"></div>
+                    <div class="card-content">
+                        <h3 class="c-title">The Cheek Squeeze</h3>
+                        <p class="c-text">
+                            B1 ke bahar, wo laal pipe ke paas. Yaar tum isme itni *pyaari* lag rahi thi na, mujhse
+                            control hi nahi hua. Maine himmat jutayi aur tumhare gaal pakad liye.
+                            <span class="highlight">Chahe hazaar log khade ho, meri nazar bas tumpe rehti hai.</span>
+                            Sach batau? Mann kar raha tha tumhe kha jau. You looked so innocent and beautiful.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6 (Hinglish) -->
+            <div class="card-wrapper in-view-trigger">
+                <div class="card" data-tilt>
+                    <div class="card-img-box"><img src="story-6.jpg" class="card-img"></div>
+                    <div class="card-content">
+                        <h3 class="c-title">Core Memory</h3>
+                        <p class="c-text">
+                            Bahana tha laptop repair ka, par mission tha tumhe ghar lana. Bike pe jab tum piche baithi
+                            aur apna haath mere kandhe pe rakha...
+                            <span class="highlight">Core Memory Unlocked.</span>
+                            Aisa laga duniya jeet li maine. Mummy ke saamne tum darr rahi thi (aur baad me mujhe daant
+                            bhi padi!), par wo kuch pal jo humne mere room me bitaye... *worth it* tha sab kuch. Laga ki
+                            haan, ye meri family hai.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title in-view-trigger">The Promise</h2>
+
+            <!-- Card 7 (Hinglish) -->
+            <div class="card-wrapper in-view-trigger">
+                <div class="card" data-tilt style="border-color:gold;box-shadow:0 0 50px rgba(255,215,0,0.2);">
+                    <div class="card-img-box"><img src="story-7.jpg" class="card-img"></div>
+                    <div class="card-content">
+                        <h3 class="c-title">11/07/2025</h3>
+                        <p class="c-text">
+                            Wo pal jisne sab badal diya. Tumne pucha:
+                            <i>"Will you be my boyfriend?...mtlb abhi kch sal fir saadi kr hii lenge..."</i>
+                            <br><br>
+                            Mera jawab bas 'Haan' nahi tha, ek wada tha. Maine kaha tha na:
+                            <span class="highlight">"Baby feelings genuine hai... wife banaunga tumhe... guarantee de
+                                sakta hu, samajh rahi ho na bubu?"</span>
+                            Aaj bhi wahi guarantee hai. Life set ho gayi thi us din.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title in-view-trigger">Reunion</h2>
+
+            <!-- Card 8 (Hinglish) -->
+            <div class="card-wrapper in-view-trigger">
+                <div class="card" data-tilt>
+                    <div class="card-img-box"><img src="story-8.jpg" class="card-img"></div>
+                    <div class="card-content">
+                        <h3 class="c-title">Mission: Reunion</h3>
+                        <p class="c-text">
+                            Tum Dhampur gayi thi toh yahan sab suna-suna lag raha tha. Par jab tum wapas aayi... J&H
+                            Cafe me. Tumne mere kandhe pe sar rakha aur mujhe laga jaan me jaan aayi.
+                            <span class="highlight">Sukoon.</span>
+                            Aur fir wo 'Mission Impossible' tumhe ghar lane ka! Camera off karna, padosiyon se chup ke
+                            aana... darr nahi lag raha tha, bas *thrill* tha ki tum mere paas ho. Best feeling ever.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 9 (Hinglish) -->
+            <div class="card-wrapper in-view-trigger">
+                <div class="card" data-tilt>
+                    <div class="card-img-box"><img src="story-9.jpg" class="card-img"></div>
+                    <div class="card-content">
+                        <h3 class="c-title">Date Night</h3>
+                        <p class="c-text">
+                            30/07/2025. Eco Garden ke momos aur Zorko. Jagah simple thi, par *mahaul* alag tha kyunki
+                            tum sath thi.
+                            <span class="highlight">Tumhari aankhon me wo chamak dekh ke main wahi pighal gaya
+                                tha.</span>
+                            Momos khate hue bhi koi itna sundar lag sakta hai kya? Us shaam mujhe tumse dubara pyaar ho
+                            gaya tha.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESTORED: Broken Fragments -->
+            <h2 class="section-title in-view-trigger">Broken Fragments</h2>
+            <div class="memories-grid in-view-trigger">
+                <div class="mem-card">
+                    <span class="mem-emoji">🫂</span>
+                    <h3 style="color:var(--accent-pink);font-family:'Great Vibes';font-size:2rem;">First Hug</h3>
+                    <p style="color:#aaa;margin-top:10px;">Room B2-210. Post-fight.<br>You hugged me, and the world
+                        stopped.</p>
+                </div>
+                <div class="mem-card">
+                    <span class="mem-emoji">😘</span>
+                    <h3 style="color:var(--accent-pink);font-family:'Great Vibes';font-size:2rem;">First Kiss</h3>
+                    <p style="color:#aaa;margin-top:10px;">Room B4-303. Goosebumps.<br>My heart froze when you kissed my
+                        cheek.</p>
+                </div>
+                <div class="mem-card">
+                    <span class="mem-emoji">🤝</span>
+                    <h3 style="color:var(--accent-pink);font-family:'Great Vibes';font-size:2rem;">Holding Hands</h3>
+                    <p style="color:#aaa;margin-top:10px;">B2 Staircase. We were last.<br>You held my hand, and I turned
+                        red.</p>
+                </div>
+            </div>
+
+            <!-- RESTORED: Finale -->
+            <section style="margin-top:10rem; margin-bottom: 5rem;">
+                <div class="finale-box in-view-trigger">
+                    <p class="vow-text">
+                        "Umrein lagi kehte huye, Do lafz the, ek baat thi...<br>
+                        Woh ek din sau saal ka, Sau saal ki woh raat thi..."
+                        <br><br>
+                        <span
+                            style="font-family:'Great Vibes';font-size:3rem;color:var(--accent-gold);display:block;margin-top:3rem;">
+                            I made a list of special people in my life with a pencil, but when I reached your name, I
+                            used a pen. Because I'm sure that I'll never have to make any change.
+                        </span>
+                        <br><br>
+                        I love you like hell, Baby. Always.
+                    </p>
+                    <button class="magic-btn" onclick="showModal()">Step Into Our Future</button>
+                </div>
+            </section>
+
+        </section>
+
+
+        <div style="height:200px;"></div>
+    </div>
+
+    <script>
+        // Cursor
+        const dot = document.getElementById('cursor-dot');
+        const out = document.getElementById('cursor-outline');
+        window.addEventListener('mousemove', e => {
+            dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
+            out.animate({ left: e.clientX + 'px', top: e.clientY + 'px' }, { duration: 500, fill: 'forwards' });
+        });
+
+        // Unlock
+        function unlock() {
+            const v = document.getElementById('pass').value;
+            if (v === 'bubu1107' || v === 'Bubu1107') {
+                document.getElementById('lock-screen').classList.add('unlocked');
+                document.getElementById('bgm').play().catch(() => { });
+                document.getElementById('journal-container').style.opacity = 1;
+                initTilt();
+            } else {
+                document.getElementById('err').style.opacity = 1;
+                setTimeout(() => document.getElementById('err').style.opacity = 0, 2000);
+            }
+        }
+
+        // Modal
+        function showModal() {
+            document.getElementById('modal-2026').classList.add('active');
+            triggerConfetti();
+        }
+        function closeModal() {
+            document.getElementById('modal-2026').classList.remove('active');
+        }
+
+        // Observer
+        const obs = new IntersectionObserver(ents => {
+            ents.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.in-view-trigger').forEach(el => obs.observe(el));
+
+        // Parallax
+        window.addEventListener('scroll', () => {
+            const s = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+            document.getElementById('bg-1').style.opacity = Math.max(0, 1 - s * 3);
+            document.getElementById('bg-2').style.opacity = Math.min(1, s * 2);
+            if (s > 0.7) {
+                document.querySelector('.moon').style.opacity = 1;
+                document.querySelector('.moon').style.bottom = '10vh';
+            }
+        });
+
+        // Fireflies
+        const fbox = document.getElementById('fireflies');
+        for (let i = 0; i < 30; i++) {
+            const d = document.createElement('div');
+            d.style.position = 'absolute'; d.style.width = '4px'; d.style.height = '4px';
+            d.style.background = 'gold'; d.style.borderRadius = '50%';
+            d.style.left = Math.random() * 100 + '%'; d.style.top = Math.random() * 100 + '%';
+            d.style.boxShadow = '0 0 10px gold';
+            d.style.animation = `float ${Math.random() * 5 + 5}s infinite alternate`;
+            fbox.appendChild(d);
+        }
+        const s = document.createElement('style');
+        s.innerHTML = `@keyframes float{from{transform:translate(0,0)}to{transform:translate(${Math.random() * 50}px,${Math.random() * 50}px)}}`;
+        document.head.appendChild(s);
+
+        // Confetti (Simple)
+        function triggerConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const c = document.createElement('div');
+                c.style.position = 'fixed'; c.style.left = '50%'; c.style.top = '50%';
+                c.style.width = '10px'; c.style.height = '10px'; c.style.background = ['#ffafd6', 'gold', '#fff'][Math.floor(Math.random() * 3)];
+                c.style.zIndex = '6001';
+                document.body.appendChild(c);
+                const angle = Math.random() * 360; const dist = Math.random() * 300 + 100;
+                c.animate([
+                    { transform: 'translate(-50%,-50%) scale(0)' },
+                    { transform: `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist}px)) scale(1)`, opacity: 0 }
+                ], { duration: 1000, easing: 'ease-out' }).onfinish = () => c.remove();
+            }
+        }
+
+        // 3D Tilt
+        function initTilt() {
+            document.querySelectorAll('.card').forEach(c => {
+                c.addEventListener('mousemove', e => {
+                    const r = c.getBoundingClientRect();
+                    const x = e.clientX - r.left;
+                    const y = e.clientY - r.top;
+                    const cx = r.width / 2; const cy = r.height / 2;
+                    const rx = ((y - cy) / cy) * -5; const ry = ((x - cx) / cx) * 5;
+                    c.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.02)`;
+                });
+                c.addEventListener('mouseleave', () => {
+                    c.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
