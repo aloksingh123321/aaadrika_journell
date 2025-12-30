@@ -442,6 +442,100 @@
                 height: 300px;
             }
         }
+
+        /* --- LOVE TIMER --- */
+        .love-timer-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 2rem 4rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 5rem;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 175, 214, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .timer-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            color: #fff;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- OPEN WHEN ENVELOPES --- */
+        .envelopes-grid {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .envelope-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            width: 250px;
+            text-align: center;
+            transition: 0.5s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .envelope-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--accent-pink);
+            box-shadow: 0 0 20px var(--accent-pink);
+        }
+
+        .envelope-card:hover {
+            transform: translateY(-15px) rotate(2deg);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-pink);
+        }
+
+        .env-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            transition: 0.5s;
+        }
+
+        .envelope-card:hover .env-icon {
+            transform: scale(1.2);
+        }
+
+        /* Generic Modal for Envelope */
+        .env-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 7000;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.5s;
+        }
+
+        .env-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
     </style>
 </head>
 
@@ -511,6 +605,14 @@
                 Aadrika's Journey</h1>
             <p style="letter-spacing:5px;margin-top:20px;color:#aaa;">WRITTEN IN THE STARS</p>
         </header>
+
+        <section id="timer-section" class="in-view-trigger">
+            <div class="love-timer-box">
+                <p style="font-family:'Great Vibes'; font-size: 2rem; color:var(--accent-pink); margin-bottom: 1rem;">
+                    Loving you for...</p>
+                <div class="timer-text" id="love-counter">Calculating...</div>
+            </div>
+        </section>
 
         <section>
             <h2 class="section-title in-view-trigger">The Beginning</h2>
@@ -708,29 +810,50 @@
                 </div>
             </div>
 
-            <!-- RESTORED: Finale -->
-            <section style="margin-top:10rem; margin-bottom: 5rem;">
-                <div class="finale-box in-view-trigger">
-                    <p class="vow-text">
-                        "Umrein lagi kehte huye, Do lafz the, ek baat thi...<br>
-                        Woh ek din sau saal ka, Sau saal ki woh raat thi..."
-                        <br><br>
-                        <span
-                            style="font-family:'Great Vibes';font-size:3rem;color:var(--accent-gold);display:block;margin-top:3rem;">
-                            I made a list of special people in my life with a pencil, but when I reached your name, I
-                            used a pen. Because I'm sure that I'll never have to make any change.
-                        </span>
-                        <br><br>
-                        I love you like hell, Baby. Always.
-                    </p>
-                    <button class="magic-btn" onclick="showModal()">Step Into Our Future</button>
-                </div>
-            </section>
+    </div>
 
-        </section>
+    <!-- OPEN WHEN SECTION -->
+    <section style="margin-top: 5rem;">
+        <h2 class="section-title in-view-trigger">For The Bad Days & The Good Days</h2>
+        <div class="envelopes-grid in-view-trigger">
+            <div class="envelope-card" onclick="openEnv('miss')">
+                <span class="env-icon">💌</span>
+                <h3 style="font-family:'Playfair Display'; color:#fff;">Open when you miss me</h3>
+            </div>
+            <div class="envelope-card" onclick="openEnv('sad')">
+                <span class="env-icon">🌧️</span>
+                <h3 style="font-family:'Playfair Display'; color:#fff;">Open when you are sad</h3>
+            </div>
+            <div class="envelope-card" onclick="openEnv('smile')">
+                <span class="env-icon">✨</span>
+                <h3 style="font-family:'Playfair Display'; color:#fff;">Open when you need a smile</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- RESTORED: Finale -->
+    <section style="margin-top:10rem; margin-bottom: 5rem;">
+        <div class="finale-box in-view-trigger">
+            <p class="vow-text">
+                "Umrein lagi kehte huye, Do lafz the, ek baat thi...<br>
+                Woh ek din sau saal ka, Sau saal ki woh raat thi..."
+                <br><br>
+                <span
+                    style="font-family:'Great Vibes';font-size:3rem;color:var(--accent-gold);display:block;margin-top:3rem;">
+                    I made a list of special people in my life with a pencil, but when I reached your name, I
+                    used a pen. Because I'm sure that I'll never have to make any change.
+                </span>
+                <br><br>
+                I love you like hell, Baby. Always.
+            </p>
+            <button class="magic-btn" onclick="showModal()">Step Into Our Future</button>
+        </div>
+    </section>
+
+    </section>
 
 
-        <div style="height:200px;"></div>
+    <div style="height:200px;"></div>
     </div>
 
     <script>
@@ -828,8 +951,54 @@
                     c.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
                 });
             });
+        });
         }
-    </script>
+
+        /* --- NEW JS --- */
+        // Love Timer
+        const startDate = new Date('2025-07-11T00:00:00').getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = now - startDate;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('love-counter').innerHTML =
+                `${days} Days : ${hours} Hours : ${minutes} Min : ${seconds} Sec`;
+        }, 1000);
+
+        // Envelopes Logic
+        const msgs = {
+            'miss': `<h2 style="font-family:'Great Vibes';color:var(--accent-pink);font-size:3rem;margin-bottom:1rem;">I Miss You Too...</h2>
+                     <p style="font-size:1.2rem;line-height:1.6;">"Distance is just a test to see how far love can travel."<br><br>
+                     Baby, close your eyes. I'm right there holding your hand. Call me? 📞</p>`,
+            'sad': `<h2 style="font-family:'Great Vibes';color:var(--accent-gold);font-size:3rem;margin-bottom:1rem;">It's Okay...</h2>
+                    <p style="font-size:1.2rem;line-height:1.6;">"Stars can't shine without darkness."<br><br>
+                    You are the strongest person I know. This feeling will pass, but I am here forever. I love you so much. ❤️</p>`,
+            'smile': `<h2 style="font-family:'Great Vibes';color:#fff;font-size:3rem;margin-bottom:1rem;">Keep Smiling!</h2>
+                      <p style="font-size:1.2rem;line-height:1.6;">Did you know?<br>
+                      Every time you smile, my world lights up. You look literally *perfect* when you laugh. <br><br>
+                      Keep shining, my star. ⭐</p>`
+        };
+
+        function openEnv(type) {
+            document.getElementById('env-content').innerHTML = msgs[type];
+            document.getElementById('env-modal').classList.add('active');
+        }
+        function closeEnv() {
+            document.getElementById('env-modal').classList.remove('active');
+        }
+    <!-- ENVELOPE MODAL (Dynamic) -->
+    <div id="env-modal" class="env-modal" onclick="closeEnv()">
+        <div class="modal-content" style="max-width: 600px;">
+            <div id="env-content"></div>
+        </div>
+    </div>
+
+    <script>
 </body>
 
-</html>
+</html >
